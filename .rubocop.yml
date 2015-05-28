@@ -1,0 +1,35 @@
+#inherited_from: ../.rubocop_todo.yml
+require: rubocop-rspec
+
+AllCops:
+  RunExtraRailsCops: true
+
+Lint/UselessAssignment:
+  Enabled: false
+Lint/AssignmentInCondition:
+  Enabled: false
+Metrics/LineLength:
+  Max: 100
+Metrics/AbcSize:
+  Max: 18
+Style/EmptyLinesAroundBody:
+  Enabled: false
+Style/HashSyntax:
+  Enabled: false
+Style/SpaceBeforeBlockBraces:
+  Enabled: true
+  EnforcedStyle: space
+Style/TrailingBlankLines:
+  Enabled: false
+# Single Quotes
+StringLiterals:
+  Enabled: true
+Style/IfUnlessModifier:
+  Enabled: false
+Style/GuardClause:
+  Enabled: false
+Style/PredicateName:
+  Enabled: false
+
+RSpec/FilePath:
+  Enabled: false
