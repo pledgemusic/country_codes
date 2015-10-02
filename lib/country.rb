@@ -346,8 +346,8 @@ class Country
 
   def self.[](string)
     return nil if string.nil?
-    # strip any characters that could en up being part of the regex below
-    string = string.to_s.gsub(/[^0-9a-z\., ]/i, '')
+
+    string = string.to_s.strip
 
     country = COUNTRIES_BY_NAME[string] || COUNTRIES_BY_ALPHA2[string]
     return new(country) if country
@@ -360,10 +360,10 @@ class Country
     # find the first country hash that has a matching value
     # (US, United States, us, uSa would all match. U.S would not.)
     country = COUNTRIES.detect do |hash|
-      hash.values.grep(/^#{string}$/i).present?
+      hash.values.grep(/^#{Regexp.quote(string)}$/i).length > 0
     end
-    return new(country) if country
-  rescue RegexpError
+
+    new(country) if country
   end
 
   def initialize(args = {})

@@ -5,11 +5,18 @@ describe Country do
     context 'valid mappings' do
       {
         'US' => ['US', 'us', 'Us', 'UsA', 'United States'],
-        'GB' => ['GB', 'gb', 'Great Britain', 'UK', 'United kingdom', 'England']
-      }.each do |country, strings|
+        'GB' => ['GB', 'gb', 'Great Britain', 'UK', 'United kingdom', 'England'],
+        'LA' => ["Lao People's Democratic Republic"],
+        'VA' => ['Holy See (Vatican City State)']
+      }.each do |code, strings|
         strings.each do |string|
-          it "#{string} -> #{country}" do
-            expect(Country[string].try(:alpha2)).to eq(country)
+          it "#{string} -> #{code}" do
+            country = described_class[string]
+            if country
+              expect(country.alpha2).to eq(code)
+            else
+              fail "country not found for #{string.inspect}"
+            end
           end
         end
       end
@@ -18,7 +25,7 @@ describe Country do
     context 'valid mappings' do
       ['?'].each do |key|
         it "#{key} -> nil" do
-          expect(Country[key]).to be_nil
+          expect(described_class[key]).to be_nil
         end
       end
     end
@@ -34,7 +41,7 @@ describe Country do
       'JP' => 'JPY'
     }.each do |country, currency|
       it "#{country.inspect} -> #{currency}" do
-        expect(Country[country].currency).to eq(currency)
+        expect(described_class[country].currency).to eq(currency)
       end
     end
   end
