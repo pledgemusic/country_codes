@@ -1,5 +1,7 @@
 # Country lookup information
 class Country
+  # rubocop:disable Metrics/LineLength
+
   # copied from ActiveMerchant, Taiwan corrected
   COUNTRIES = [
     { alpha2: 'AF', name: 'Afghanistan', alpha3: 'AFG', numeric: '004' },
@@ -249,29 +251,36 @@ class Country
     { alpha2: 'ZM', name: 'Zambia', alpha3: 'ZMB', numeric: '894' },
     { alpha2: 'ZW', name: 'Zimbabwe', alpha3: 'ZWE', numeric: '716' },
     { alpha2: 'AX', name: 'Åland Islands', alpha3: 'ALA', numeric: '248' }
-  ]
-  COUNTRIES_BY_ALPHA2 = COUNTRIES.map { |c| [c[:alpha2], c] }.to_h
-  COUNTRIES_BY_ALPHA3 = COUNTRIES.map { |c| [c[:alpha3], c] }.to_h
-  COUNTRIES_BY_NAME   = COUNTRIES.map { |c| [c[:name], c] }.to_h
+  ].freeze
 
-  COUNTRY_NAMES_BY_CODE = COUNTRIES.map { |c| [c[:alpha2], c[:name]] }.to_h
+  #
+  # Key Pairs
+  #
 
-  # rubocop:disable Metrics/LineLength
+  COUNTRIES_BY_ALPHA2 = COUNTRIES.map { |c| [c[:alpha2], c] }.to_h.freeze
+  COUNTRIES_BY_ALPHA3 = COUNTRIES.map { |c| [c[:alpha3], c] }.to_h.freeze
+  COUNTRIES_BY_NAME   = COUNTRIES.map { |c| [c[:name], c] }.to_h.freeze
+  COUNTRY_NAMES_BY_CODE = COUNTRIES.map { |c| [c[:alpha2], c[:name]] }.to_h.freeze
+
+  #
+  # Country Groups
+  #
+
   CONTINENTS = {
     'Africa'         => %w(AO BF BI BJ BW CD CF CG CI CM CV DJ DZ EG EH ER ET GA GH GM GN GQ GW KE KM LR LS LY MA MG ML MR MU MW MZ NA NE NG RE RW SC SD SL SN SO ST SZ TD TG TN TZ UG YT ZA ZM ZW), # ZR
     'Americas'       => %w(AG AI AN AR AW BB BL BM BO BR BS BZ CA CL CO CR CU DM DO EC FK GD GF GL GP GT GY HN HT JM KN KY LC MF MQ MS MX NI PA PE PM PR PY SR SV TC TT US UY VC VE VG VI),
-    #"Antarctica"     => %w('AQ'),
+    # "Antarctica"     => %w('AQ'),
     'Asia'           => %w(AE AF AM AZ BD BH BN BT CC CN CX CY GE HK ID IL IN IO IQ IR JO JP KG KH KP KR KW KZ LA LB LK MM MN MO MV MY NP OM PH PK PS QA RU SA SG SY TH TJ TL TM TR TW UZ VN YE), # TP
     'Atlantic Ocean' => %w(BV GS SH),
     'Europe'         => %w(AD AL AT AX BA BE BG BY CH CZ DE DK EE ES FI FO FR GB GG GI GR HR HU IE IM IS IT JE LI LT LU LV MC MD ME MK MT NL NO PL PT RO RS SE SI SJ SK SM UA VA), # YU FX
     'Indian Ocean'   => %w(HM TF),
-    'Oceania'        => %w(AS AU CK FJ FM GU KI MH MP NC NF NR NU NZ PF PG PN PW SB TK TO TV UM VU WF WS)
-  }
+    'Oceania'        => %w(AS AU CK FJ FM GU KI MH MP NC NF NR NU NZ PF PG PN PW SB TK TO TV UM VU WF WS),
 
-  CONTINENTS['EU for Royal Mail'] = CONTINENTS['Europe'] - %w(CH NO)
+    'EU for Royal Mail' => %w(AD AL AT AX BA BE BG BY CH CZ DE DK EE ES FI FO FR GB GG GI GR HR HU IE IM IS IT JE LI LT LU LV MC MD ME MK MT NL NO PL PT RO RS SE SI SJ SK SM UA VA) - %w(CH NO)
+  }.freeze
 
   REGIONS = {
-    'Central Africa'        => %w(BI CD CF CG RW TD),  # ZR
+    'Central Africa'        => %w(BI CD CF CG RW TD), # ZR
     'Eastern Africa'        => %w(DJ ER ET KE SO TZ UG),
     'Northern Africa'       => %w(DZ EG EH LY MA SD TN),
     'Southern Africa'       => %w(AO BW LS MW MZ NA SZ ZA ZM ZW),
@@ -307,14 +316,28 @@ class Country
     'Southern Europe'       => %w(IT MT SM VA),
     'South West Europe'     => %w(AD ES GI PT),
     'Western Europe'        => %w(BE DE FR GB GG IE IM JE LU MC ME NL) # FX
-  }
+  }.freeze
 
-  COUNTRY_CODES = COUNTRY_NAMES_BY_CODE.keys
-  EU_COUNTRY_CODES = %w(AT BE BG CY CZ DE DK EE ES FI FR GB GR HU IE IT LT LU LV MT NL PL PT RO SE SI SK)
+  NAMES_TO_COUNTRIES = Country::COUNTRIES_BY_NAME.merge(Country::REGIONS).map do |key, countries|
+    countries = countries.is_a?(Hash) ? [countries[:alpha2]] : countries
+    [
+      key.upcase, [countries].flatten
+    ]
+  end.to_h.freeze
+
+  #
+  # Arrays of codes
+  #
+
+  COUNTRY_CODES = COUNTRY_NAMES_BY_CODE.keys.freeze
+
+  EU_COUNTRY_CODES = %w(
+    AT BE BG CY CZ DE DK EE ES FI FR GB GR HU IE IT LT LU LV MT NL PL PT RO SE SI SK
+  ).freeze
 
   # Dependencies list
-  GB_COUNTRY_CODES = %w(AI BM FK GB GG GI GS IM IO JE KY MS PN SH TC VG")
-  US_COUNTRY_CODES = %w(AS MP PR US VI)
+  GB_COUNTRY_CODES = %w(AI BM FK GB GG GI GS IM IO JE KY MS PN SH TC VG).freeze
+  US_COUNTRY_CODES = %w(AS MP PR US VI).freeze
 
   COUNTRIES.each do |c|
     c[:currency] = case c[:alpha2]
@@ -324,12 +347,12 @@ class Country
                      'GBP'
                    when 'CA'
                      'CAD'
-                   when *EU_COUNTRY_CODES
-                     'EUR'
                    when 'AU'
                      'AUD'
                    when 'JP'
                      'JPY'
+                   when *EU_COUNTRY_CODES
+                     'EUR'
                    end
   end
 
@@ -340,7 +363,9 @@ class Country
     'CAD' => ['CA'],
     'AUD' => ['AU'],
     'JPY' => ['JP']
-  }
+  }.freeze
+
+  # rubocop:enable Metrics/LineLength
 
   attr_accessor :name, :alpha2, :alpha3, :numeric, :currency
 
