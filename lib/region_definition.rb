@@ -56,6 +56,6 @@ class RegionDefinition
   private
 
   def string_matches
-    to_s.scan(/([\+\-]{0,1})([^\+\-,]*)/).reject { |match| match == ['', ''] }
+    to_s.scan(/([\+\-]{0,1})([^\+\-]*)/).reject { |match| match == ['', ''] }
   end
 end

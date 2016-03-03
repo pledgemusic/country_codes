@@ -318,7 +318,10 @@ class Country
     'Western Europe'        => %w(BE DE FR GB GG IE IM JE LU MC ME NL) # FX
   }.freeze
 
-  NAMES_TO_COUNTRIES = Country::COUNTRIES_BY_NAME.merge(Country::REGIONS).map do |key, countries|
+  all = Country::COUNTRIES_BY_NAME.merge(Country::REGIONS).merge(Country::CONTINENTS)
+  all['Royal Mail'] = all['EU for Royal Mail']
+
+  NAMES_TO_COUNTRIES = all.map do |key, countries|
     countries = countries.is_a?(Hash) ? [countries[:alpha2]] : countries
     [
       key.upcase, [countries].flatten

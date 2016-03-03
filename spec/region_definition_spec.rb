@@ -45,6 +45,7 @@ describe RegionDefinition do
   [
     ['North America - Greenland', %w(CA PM US)],
     ['North America - Greenland + GL', %w(CA GL PM US)],
+    ['North America - PM,GL + MX', %w(CA MX US)],
     ['US + North America - Greenland + GL', %w(CA GL PM US)],
     ['US + North America - Greenland -PM', %w(CA US)]
   ].each do |definition, countries|
