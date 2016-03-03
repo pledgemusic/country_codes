@@ -34,9 +34,12 @@ class RegionDefinition
     end
   end
 
-  def initialize(string)
+  def initialize(string, custom_regions = {})
     @string = string
+    @custom_regions = custom_regions
   end
+
+  attr_reader :string, :custom_regions
 
   def to_s
     @string.to_s
@@ -51,7 +54,7 @@ class RegionDefinition
   end
 
   def to_a
-    @to_a ||= string_matches.map { |segment| Segment.new(segment) }
+    @to_a ||= string_matches.map { |segment| Segment.new(segment, custom_regions) }
   end
 
   private
