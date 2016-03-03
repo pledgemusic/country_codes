@@ -318,16 +318,6 @@ class Country
     'Western Europe'        => %w(BE DE FR GB GG IE IM JE LU MC ME NL) # FX
   }.freeze
 
-  all = Country::COUNTRIES_BY_NAME.merge(Country::REGIONS).merge(Country::CONTINENTS)
-  all['Royal Mail'] = all['EU for Royal Mail']
-
-  NAMES_TO_COUNTRIES = all.map do |key, countries|
-    countries = countries.is_a?(Hash) ? [countries[:alpha2]] : countries
-    [
-      key.upcase, [countries].flatten
-    ]
-  end.to_h.freeze
-
   #
   # Arrays of codes
   #
@@ -367,6 +357,23 @@ class Country
     'AUD' => ['AU'],
     'JPY' => ['JP']
   }.freeze
+
+  #
+  # Big Uppercase lookup by continent, region, full name, code
+  # { 'US' => ['US'], 'North America' => ['US', 'CA', ...], 'France' => ['FR'], ... }
+  #
+
+  all = Country::COUNTRIES_BY_NAME.merge(COUNTRY_CODES.map { |c| [c, [c]] }.to_h)
+                                  .merge(Country::REGIONS)
+                                  .merge(Country::CONTINENTS)
+  all['Royal Mail'] = all['EU for Royal Mail']
+
+  NAMES_TO_COUNTRIES = all.map do |key, countries|
+    countries = countries.is_a?(Hash) ? [countries[:alpha2]] : countries
+    [
+      key.upcase, [countries].flatten
+    ]
+  end.to_h.freeze
 
   # rubocop:enable Metrics/LineLength
 

@@ -9,10 +9,11 @@ class RegionDefinition
       input
     end
 
-    def initialize(input)
+    def initialize(input, custom_regions = {})
       operator, names = self.class.check_input(input).scan(/([\+\-]){0,1}(.*)/).first
       @operator = operator.to_s.strip
       @operator = '+' if @operator.empty?
+      @custom_regions = custom_regions.map { |k, v| [k.to_s.upcase, v] }.to_h
       @names = names.to_s.split(',').map(&:strip).join(', ')
     end
 
@@ -24,12 +25,12 @@ class RegionDefinition
 
     def countries
       @countries ||= names.split(', ').map do |name|
-        if Country::COUNTRY_CODES.include?(name)
-          name
-        else
-          Country::NAMES_TO_COUNTRIES[name.upcase]
-        end
+        regions[name.upcase]
       end.flatten.compact.uniq.sort
+    end
+
+    def regions
+      @regions ||= Country::NAMES_TO_COUNTRIES.merge(@custom_regions)
     end
   end
 
