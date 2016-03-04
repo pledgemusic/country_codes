@@ -38,7 +38,7 @@ class RegionDefinition
 
     def names_to_array(names)
       csv = names.gsub("\n", ',').gsub(', "', ',"')
-      CSV.parse(csv).flatten
+      CSV.parse(csv).flatten.compact
     end
   end
 
