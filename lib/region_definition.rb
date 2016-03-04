@@ -1,4 +1,5 @@
 # "North America - Greenland + South East Asia"
+require 'csv'
 class RegionDefinition
   # A segment of the definition, eg '+ South East Asia' or 'US, CA'
   class Segment
@@ -14,7 +15,7 @@ class RegionDefinition
       @operator = operator.to_s.strip
       @operator = '+' if @operator.empty?
       @custom_regions = custom_regions.map { |k, v| [k.to_s.upcase, v] }.to_h
-      @names = names.to_s.split(',').map(&:strip).join(', ')
+      @names = names.to_s.strip
     end
 
     attr_reader :names, :operator
@@ -24,13 +25,19 @@ class RegionDefinition
     end
 
     def countries
-      @countries ||= names.split(', ').map do |name|
-        regions[name.upcase]
+      @countries ||= names_to_array(names).map do |name|
+        look_up_list[name.strip.upcase]
       end.flatten.compact.uniq.sort
     end
 
-    def regions
-      @regions ||= Country::NAMES_TO_COUNTRIES.merge(@custom_regions)
+    def look_up_list
+      @look_up_list ||= Country::LOOKUP_COUNTRY_CODES.merge(@custom_regions)
+    end
+
+    private
+
+    def names_to_array(names)
+      names = CSV.parse(names.gsub(', "', ',"')).flatten
     end
   end
 

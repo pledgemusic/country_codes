@@ -11,9 +11,13 @@ describe RegionDefinition do
         'Addition with codes',
         '+ US, CA', '+', 'US, CA', %w(CA US)
       ],
+      # [
+      #   'Country names stripping space in list',
+      #   ' United States,  Greenland', '+', 'United States, Greenland', %w(GL US)
+      # ],
       [
-        'Country names stripping space in list',
-        ' United States,  Greenland', '+', 'United States, Greenland', %w(GL US)
+        'Works with quotes',
+        'US, "Bonaire, Saint Eustatius and Saba", CA ', '+', 'US, "Bonaire, Saint Eustatius and Saba", CA', %w(BQ CA US)
       ],
       [
         'Subtraction with Region with stripping',
