@@ -262,30 +262,17 @@ class Country
   # Country Groups
   #
 
-  CONTINENTS = {
-    'Africa'         => %w(AO BF BI BJ BW CD CF CG CI CM CV DJ DZ EG EH ER ET GA GH GM GN GQ GW KE KM LR LS LY MA MG ML MR MU MW MZ NA NE NG RE RW SC SD SL SN SO ST SZ TD TG TN TZ UG YT ZA ZM ZW), # ZR
-    'Americas'       => %w(AG AI AN AR AW BB BL BM BO BR BS BZ CA CL CO CR CU DM DO EC FK GD GF GL GP GT GY HN HT JM KN KY LC MF MQ MS MX NI PA PE PM PR PY SR SV TC TT US UY VC VE VG VI),
-    # "Antarctica"     => %w('AQ'),
-    'Asia'           => %w(AE AF AM AZ BD BH BN BT CC CN CX CY GE HK ID IL IN IO IQ IR JO JP KG KH KP KR KW KZ LA LB LK MM MN MO MV MY NP OM PH PK PS QA RU SA SG SY TH TJ TL TM TR TW UZ VN YE), # TP
-    'Atlantic Ocean' => %w(BV GS SH),
-    'Europe'         => %w(AD AL AT AX BA BE BG BY CH CZ DE DK EE ES FI FO FR GB GG GI GR HR HU IE IM IS IT JE LI LT LU LV MC MD ME MK MT NL NO PL PT RO RS SE SI SJ SK SM UA VA), # YU FX
-    'Indian Ocean'   => %w(HM TF),
-    'Oceania'        => %w(AS AU CK FJ FM GU KI MH MP NC NF NR NU NZ PF PG PN PW SB TK TO TV UM VU WF WS),
-
-    'EU for Royal Mail' => %w(AD AL AT AX BA BE BG BY CH CZ DE DK EE ES FI FO FR GB GG GI GR HR HU IE IM IS IT JE LI LT LU LV MC MD ME MK MT NL NO PL PT RO RS SE SI SJ SK SM UA VA) - %w(CH NO)
-  }.freeze
-
   REGIONS = {
     'Central Africa'        => %w(BI CD CF CG RW TD), # ZR
     'Eastern Africa'        => %w(DJ ER ET KE SO TZ UG),
-    'Northern Africa'       => %w(DZ EG EH LY MA SD TN),
+    'Northern Africa'       => %w(DZ EG EH LY MA SD SS TN),
     'Southern Africa'       => %w(AO BW LS MW MZ NA SZ ZA ZM ZW),
     'Western Africa'        => %w(BF BJ CI CM CV GA GH GM GN GQ GW LR ML MR NE NG SL SN ST TG),
 
     'Central America'       => %w(BZ CR GT HN MX NI PA SV),
     'North America'         => %w(CA GL PM US),
     'South America'         => %w(AR BO BR CL CO EC FK GF GY PE PY SR UY VE),
-    'West Indies'           => %w(AG AI AN AW BB BL BM BS CU DM DO GD GP HT JM KN KY LC MF MQ MS PR TC TT VC VG VI),
+    'West Indies'           => %w(AG AI AW BB BL BM BS BQ CU CW DM DO GD GP HT JM KN KY LC MF MQ MS PR SX TC TT VC VG VI),
 
     # 'Antarctica'          => %w(AQ),
 
@@ -296,12 +283,10 @@ class Country
     'South East Asia'       => %w(BN CC CX ID KH LA MM MY PH SG TH TL VN), # TP
     'South West Asia'       => %w(AE AM AZ BH CY GE IL IQ IR JO KW LB OM PS QA SA SY TR YE),
 
-    'South East Europe'     => %w(AL BA BG GR HR MK RO RS SI), # YU
-
     'Indian Ocean'          => %w(KM MG MU RE SC YT),
     'Southern Indian Ocean' => %w(HM TF),
 
-    'Pacific'               => %w(AS AU CK FJ FM GU KI MH MP NC NF NR NU NZ PF PG PN PW SB TK TO TV VU WF W),
+    'Pacific'               => %w(AS AU CK FJ FM GU KI MH MP NC NF NR NU NZ PF PG PN PW SB TK TO TV VU WF WS),
     'North Pacific Ocean'   => %w(UM),
 
     'South Atlantic Ocean'  => %w(BV GS SH),
@@ -310,9 +295,21 @@ class Country
     'Eastern Europe'        => %w(BY EE LT LV MD PL UA),
     'Northern Europe'       => %w(AX DK FI FO IS NO SE SJ),
     'Southern Europe'       => %w(IT MT SM VA),
+    'South East Europe'     => %w(AL BA BG GR HR MK RO RS SI XK), # YU
     'South West Europe'     => %w(AD ES GI PT),
     'Western Europe'        => %w(BE DE FR GB GG IE IM JE LU MC ME NL) # FX
   }.freeze
+
+  CONTINENTS = {
+    'Africa' => ['Central Africa', 'Eastern Africa', 'Northern Africa', 'Southern Africa', 'Western Africa'],
+    'Americas' => ['Central America', 'North America', 'South America', 'West Indies'],
+    'Asia' => ['Northern Asia', 'Central Asia', 'East Asia', 'South Asia', 'South East Asia', 'South West Asia'],
+    'Atlanic Ocean' => ['South Atlantic Ocean'],
+    'Europe' => ['Central Europe', 'Eastern Europe', 'Northern Europe', 'Southern Europe', 'South East Europe', 'South West Europe', 'Western Europe'],
+    'Indian Ocean' => ['Indian Ocean', 'Southern Indian Ocean'],
+    'Oceania' => ['Pacific', 'North Pacific Ocean'],
+    'EU for Royal Mail' => %w(AD AL AT AX BA BE BG BY CH CZ DE DK EE ES FI FO FR GB GG GI GR HR HU IE IM IS IT JE LI LT LU LV MC MD ME MK MT NL NO PL PT RO RS SE SI SJ SK SM UA VA) - %w(CH NO)
+  }.map { |continent, regions| [continent, regions.map { |region| REGIONS[region] || region }.flatten] }.to_h
 
   #
   # Arrays of codes
@@ -327,7 +324,6 @@ class Country
   # Dependencies list
   GB_COUNTRY_CODES = %w(AI BM FK GB GG GI GS IM IO JE KY MS PN SH TC VG).freeze
   US_COUNTRY_CODES = %w(AS MP PR US VI).freeze
-
 
   #
   # Hash data

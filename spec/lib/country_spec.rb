@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe Country do
   describe 'constants' do
-
     it 'COUNTRY_CODES_BY_CODE' do
       expect(Country::COUNTRY_CODES_BY_CODE['FR']).to eq('FR')
     end
@@ -17,6 +16,18 @@ describe Country do
 
     it 'COUNTRIES' do
       expect(Country::COUNTRIES['FR'][:name]).to eq('France')
+    end
+
+    it 'REGIONS' do
+      countries = Country::REGIONS.values.flatten
+      expect(Country::COUNTRY_CODES - countries).to eq(['AQ'])
+      expect(countries.length).to eq(countries.uniq.length)
+    end
+
+    it 'CONTINENTS has no duplicates' do
+      countries = Country::CONTINENTS.reject { |c, v| c =~ /Royal/ }.values.flatten
+      expect(Country::COUNTRY_CODES - countries).to eq(['AQ'])
+      expect(countries.length).to eq(countries.uniq.length)
     end
 
     it 'LOOKUP_COUNTRY_CODES' do
