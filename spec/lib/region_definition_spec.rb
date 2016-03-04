@@ -20,11 +20,15 @@ describe RegionDefinition do
         'US, "Bonaire, Saint Eustatius and Saba", CA ', '+', 'US, "Bonaire, Saint Eustatius and Saba", CA', %w(BQ CA US)
       ],
       [
+        'Works with returns',
+        %(US, France\n"Bonaire, Saint Eustatius and Saba", CA ), '+', %(US, France\n"Bonaire, Saint Eustatius and Saba", CA), %w(BQ CA FR US)
+      ],
+      [
         'Subtraction with Region with stripping',
         '- North America ', '-', 'North America', %w(CA GL PM US)
       ]
     ].each do |label, segment, operator, names, countries|
-      describe %(#{label} ("#{segment}" => #{operator} #{countries.inspect})) do
+      describe %(#{label} ("#{segment.inspect}" => #{operator} #{countries.inspect})) do
         subject { described_class.new(segment) }
 
         it '#names' do

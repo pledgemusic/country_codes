@@ -11,7 +11,7 @@ class RegionDefinition
     end
 
     def initialize(input, custom_regions = {})
-      operator, names = self.class.check_input(input).scan(/([\+\-]){0,1}(.*)/).first
+      operator, names = self.class.check_input(input).scan(/([\+\-]){0,1}(.*)/m).first
       @operator = operator.to_s.strip
       @operator = '+' if @operator.empty?
       @custom_regions = custom_regions.map { |k, v| [k.to_s.upcase, v] }.to_h
@@ -37,7 +37,8 @@ class RegionDefinition
     private
 
     def names_to_array(names)
-      names = CSV.parse(names.gsub(', "', ',"')).flatten
+      csv = names.gsub("\n", ',').gsub(', "', ',"')
+      CSV.parse(csv).flatten
     end
   end
 
