@@ -36,6 +36,20 @@ describe Country do
     end
   end
 
+  describe '.compress_list' do
+    [
+      [
+        'Extract North America',
+        described_class::REGIONS['North America'] + ['FR'],
+        ['FR', 'NORTH AMERICA']
+      ]
+    ].each do |label, input, output|
+      it label do
+        expect(described_class.compress_list(input)).to eq(output)
+      end
+    end
+  end
+
   describe '.[]' do
     context 'valid mappings' do
       {

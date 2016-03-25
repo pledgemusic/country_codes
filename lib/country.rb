@@ -378,6 +378,19 @@ class Country
 
   attr_accessor :name, :code, :currency
 
+  def self.compress_list(list_of_countries)
+    Country::LOOKUP_COUNTRY_CODES.sort_by { |x,y| - y.length }.each do |lookup, countries|
+      next unless countries.length > 1
+
+      if (countries & list_of_countries).sort == countries.sort
+        list_of_countries -= countries
+        list_of_countries << lookup
+      end
+    end
+
+    list_of_countries.sort
+  end
+
   def self.[](string)
     string = string.to_s.strip
     return nil if string.empty?
