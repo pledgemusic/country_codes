@@ -308,7 +308,7 @@ class Country
     'Europe' => ['Central Europe', 'Eastern Europe', 'Northern Europe', 'Southern Europe', 'South East Europe', 'South West Europe', 'Western Europe'],
     'Indian Ocean' => ['Indian Ocean', 'Southern Indian Ocean'],
     'Oceania' => ['Pacific', 'North Pacific Ocean'],
-    'EU for Royal Mail' => %w(AD AL AT AX BA BE BG BY CH CZ DE DK EE ES FI FO FR GB GG GI GR HR HU IE IM IS IT JE LI LT LU LV MC MD ME MK MT NL NO PL PT RO RS SE SI SJ SK SM UA VA) - %w(CH NO)
+    'EU for Royal Mail' => %w(AD AL AT AX BA BE BG BY CH CZ DE DK EE ES FI FO FR GG GI GR HR HU IE IM IS IT JE LI LT LU LV MC MD ME MK MT NL NO PL PT RO RS SE SI SJ SK SM UA VA) - %w(CH NO)
   }.map { |continent, regions| [continent, regions.map { |region| REGIONS[region] || region }.flatten] }.to_h
 
   #
@@ -365,7 +365,6 @@ class Country
   #
 
   all = COUNTRY_CODES_BY_CODE.merge(COUNTRY_CODES_BY_NAME).merge(REGIONS).merge(CONTINENTS)
-  all['Royal Mail'] = all['EU for Royal Mail']
 
   LOOKUP_COUNTRY_CODES = all.map do |key, countries|
     countries = countries.is_a?(Hash) ? [countries[:name]] : countries
