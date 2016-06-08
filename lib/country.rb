@@ -364,7 +364,9 @@ class Country
   # { 'US' => ['US'], 'NORTH AMERICA' => ['US', 'CA', ...], 'FRANCE' => ['FR'], ... }
   #
 
-  all = COUNTRY_CODES_BY_CODE.merge(COUNTRY_CODES_BY_NAME).merge(REGIONS).merge(CONTINENTS)
+  all = COUNTRY_CODES_BY_CODE.merge(COUNTRY_CODES_BY_NAME).merge(REGIONS).merge(CONTINENTS).merge(
+    'Great Britain' => %w(GB)
+  )
 
   LOOKUP_COUNTRY_CODES = all.map do |key, countries|
     countries = countries.is_a?(Hash) ? [countries[:name]] : countries

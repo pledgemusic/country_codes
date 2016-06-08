@@ -24,15 +24,20 @@ Rake::RDocTask.new do |rdoc|
 end
 
 require 'rspec/core/rake_task'
-RSpec::Core::RakeTask.new(:spec) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.spec_files = FileList['spec/**/*_spec.rb']
-end
+# RSpec::Core::RakeTask.new(:spec) do |spec|
+#   rspec.libs << 'lib' << 'spec'
+#   spec.spec_files = FileList['spec/**/*_spec.rb']
+# end
+# RSpec::Core::RakeTask.new(:rcov) do |spec|
+#   spec.libs << 'lib' << 'spec'
+#   spec.pattern = 'spec/**/*_spec.rb'
+#   spec.rcov = true
+# end
 
-RSpec::Core::RakeTask.new(:rcov) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.pattern = 'spec/**/*_spec.rb'
-  spec.rcov = true
+RSpec::Core::RakeTask.new(:spec) do |t|
+  desc 'Run all RSpec code'
+  t.pattern    = 'spec/**/*_spec.rb'
+  t.rspec_opts = '-t ~skip'
 end
 
 task default: :spec
