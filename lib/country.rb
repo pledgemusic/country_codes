@@ -366,7 +366,7 @@ class Country
 
   all = COUNTRY_CODES_BY_CODE.merge(COUNTRY_CODES_BY_NAME).merge(REGIONS).merge(CONTINENTS).merge(
     'Great Britain' => %w(GB)
-  )
+  ).merge('all' => COUNTRY_CODES)
 
   LOOKUP_COUNTRY_CODES = all.map do |key, countries|
     countries = countries.is_a?(Hash) ? [countries[:name]] : countries
