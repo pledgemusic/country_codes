@@ -53,7 +53,7 @@ describe Country do
   describe '.[]' do
     context 'valid mappings' do
       {
-        'US' => ['US', 'us', 'Us', 'United States'],
+        'US' => ['US', 'us', 'Us', 'United States', 'America'],
         'GB' => ['GB', 'gb', 'Great Britain', 'UK', 'United kingdom', 'England'],
         'BQ' => ['Bonaire, Saint Eustatius and Saba']
       }.each do |code, strings|
@@ -71,7 +71,7 @@ describe Country do
     end
 
     context 'invalid mappings' do
-      ['?'].each do |key|
+      ['?', 'Americas'].each do |key|
         it "#{key} -> nil" do
           expect(described_class[key]).to be_nil
         end

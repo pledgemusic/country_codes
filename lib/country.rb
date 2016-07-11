@@ -393,16 +393,15 @@ class Country
   end
 
   def self.[](string)
-    string = string.to_s.strip
-    return nil if string.empty?
-
+    string = string.to_s.strip.upcase
     country = new(string)
     return country if country.code
 
     # TRY HARDER
+    return if (CONTINENTS.keys + REGIONS.keys + ['']).map(&:upcase).include?(string)
+
     string = 'GB' if string =~ /^(uk|great britain|england)$/i
-    string = string.to_s.strip
-    string = 'US' if string.downcase.include?('america') && !string.downcase.include?('samoa')
+    string = 'US' if string.include?('AMERICA') && !string.downcase.include?('SAMOA')
 
     # find the first country hash that has a matching value
     # (US, United States, us, uSa would all match. U.S would not.)
