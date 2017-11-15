@@ -55,7 +55,8 @@ describe RegionDefinition do
     ['North America - Greenland + GL', %w(CA GL PM US)],
     ['North America - PM,GL + MX', %w(CA MX US)],
     ['US + North America - Greenland + GL', %w(CA GL PM US)],
-    ['US + North America - Greenland -PM', %w(CA US)]
+    ['US + North America - Greenland -PM', %w(CA US)],
+    ['6- 7\" invalid characters', []]
   ].each do |definition, countries|
     describe definition.to_s do
       subject { described_class.new(definition) }
